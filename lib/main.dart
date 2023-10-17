@@ -1,13 +1,15 @@
-import 'package:cats_api/presntation/cats_page.dart';
-import 'package:cats_api/data/model/cat.dart';
+import 'package:cats_api/presntation/bloc/cats_bloc.dart';
+
 import 'package:cats_api/presntation/home_page.dart';
-import 'package:cats_api/presntation/more_cats.dart';
-import 'package:cats_api/data/remote/cats_api.dart';
+
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(BlocProvider(
+    create: (context) => CatsBloc(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -17,16 +19,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        textTheme: const TextTheme(
-            displayMedium:
-                TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home:const HomePage()
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          textTheme: const TextTheme(
+              displayMedium:
+                  TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const HomePage());
   }
 }
 

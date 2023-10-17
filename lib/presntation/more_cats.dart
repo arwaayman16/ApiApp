@@ -1,5 +1,8 @@
+import 'package:cats_api/data/model/cat.dart';
 import 'package:cats_api/data/remote/cats_api.dart';
+import 'package:cats_api/presntation/bloc/cats_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MoreCatsPage extends StatefulWidget {
   const MoreCatsPage({super.key, required this.a});
@@ -10,25 +13,24 @@ class MoreCatsPage extends StatefulWidget {
 }
 
 class _MoreCatsPageState extends State<MoreCatsPage> {
+  List<Cat> c = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      child: FutureBuilder(
-          future: CatApiImpl().getMoreCat(widget.a),
-          builder: (context, snapshot) {
-            print(snapshot.data);
-            if (snapshot.connectionState == ConnectionState.waiting ||
-                snapshot.data == null) {
-              return CircularProgressIndicator();
-            } else {
-              return ListView.builder(
+        body: BlocBuilder<CatsBloc, CatsState>(builder: (context, state) {
+      return Column(
+        children: [
+          if (state is CatsLoading) const CircularProgressIndicator(),
+          if (state is CatsLoded)
+            Expanded(
+              child: ListView.builder(
                 itemBuilder: (context, i) =>
-                    Image.network("${snapshot.data![i].url}"),
-                itemCount: snapshot.data!.length,
-              );
-            }
-          }),
-    ));
+                    Image.network("${state.cat[i].url}"),
+                itemCount: state.cat.length,
+              ),
+            ),
+        ],
+      );
+    }));
   }
 }
